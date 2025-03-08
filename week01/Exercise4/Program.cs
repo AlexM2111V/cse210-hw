@@ -50,6 +50,7 @@ class Program
 
         Console.WriteLine($"The max is: {max}");
 
+        //Fin the smallest positive number (the positive number that is closest to zero)
         int minPositive = 1000000;
 
         foreach (int num in numbers)
