@@ -6,25 +6,23 @@ class Program
 {
     static void Main(string[] args)
     {
-        Reference firstReference = new Reference("Mosiah", 2, 17);
-        Scripture favoriteScripture = new Scripture(firstReference, "When ye are in the service of your fellow beings ye are only in the service of your God");
-        //The next two lines are to create a Reference with multiple verses
-        //Reference firstReference = new Reference("2 Nephi", 2, 25, 26);
-        //Scripture favoriteScripture = new Scripture(firstReference, "Adam fell that men might be; and men are, that they might have joy. And the Messiah cometh in the fullness of time, that he may redeem the children of men from the fall.And because that they are redeemed from the fall they have become free forever, knowing good from evil; to act for themselves and not to be acted upon, save it be by the punishment of the law at the great and last day, according to the commandments which God has given.");
+
         string answer = "";
+
+        Scripture favoriteScripture = GetRandomEntry();
 
         while (answer != "quit")
         {
             Console.Clear();
             Console.WriteLine(favoriteScripture.GetDisplayText());
             Console.WriteLine("\nPress enter to continue or type 'quit' to finish: ");
-            string userInput = Console.ReadLine();  // Read the user's input
+            string userInput = Console.ReadLine();
 
-            if (userInput.ToLower() == "quit")  // Check if the user typed 'quit' (case-insensitive)
+            if (userInput.ToLower() == "quit")
             {
-                break;  // Exit the loop and terminate the program
+                break;
             }
-            else if (userInput == "")  // Check if the user pressed Enter (empty input)
+            else if (userInput == "")
             {
                 if (favoriteScripture.IsCompletelyHidden())
                 {
@@ -40,5 +38,37 @@ class Program
                 Console.WriteLine("Invalid input\n");
             }
         }
+    }
+
+     static Scripture GetRandomEntry()
+    {
+        string[] lines = File.ReadAllLines("Scriptures.csv");
+
+        if (lines.Length == 0)
+            throw new Exception("File is empty");
+
+        Random random = new Random();
+
+        string randomLine = lines[random.Next(lines.Length)];
+        string[] parts = randomLine.Split('~');
+        
+        string text = (parts[0]);
+        string book = parts[1];
+        int chapter = int.Parse(parts[2]);
+        int verse = int.Parse(parts[3]);
+
+        Reference favoriteReference;
+
+        if (parts[4] != "")
+        {
+            int endVerse = int.Parse(parts[4]);
+            favoriteReference = new Reference(book, chapter, verse, endVerse);
+        }
+        else
+        {
+            favoriteReference = new Reference(book, chapter, verse);
+        }
+
+        return new Scripture(favoriteReference, text);
     }
 }
