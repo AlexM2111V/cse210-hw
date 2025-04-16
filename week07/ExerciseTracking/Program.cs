@@ -13,6 +13,7 @@ class Program
         activities.Add(cycling1);
         activities.Add(swimming1);
 
+        Console.WriteLine("\nThis is your workout summary:");
         foreach ( Activity activity in activities )
         {
             activity.GetSummary();
